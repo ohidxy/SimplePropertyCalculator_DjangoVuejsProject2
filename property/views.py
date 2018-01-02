@@ -8,7 +8,8 @@ class PropertyListView(ListView):
     model = Property
     template_name='property/home.html'
     def get_context_data(self, **kwargs):
-        context = dict(Property.objects.all())
+        context = super(PropertyListView, self).get_context_data(**kwargs)
+        context['property'] = Property.objects.all()
         return context
 
 class PropertyView(TemplateView):
