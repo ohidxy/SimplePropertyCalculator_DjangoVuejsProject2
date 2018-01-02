@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.views.generic.list import ListView
 from .models import Property
-from .forms import AddProperty
+from .forms import AddProperty, AddPropertyType
 
 
 class PropertyListView(ListView):
@@ -18,10 +18,15 @@ class PropertyListView(ListView):
         context['property'] = Property.objects.all()
         return context
 
-class PropertyView(TemplateView):
+class AddPropertyView(TemplateView):
     def get(self, request):
-        form = AddProperty()
-        return render(request, 'property/add_property.html', {'form': form})
+        property_form = AddProperty()
+        properttype_form = AddPropertyType()
+        context = {
+          'property_form': property_form, 
+          'properttype_form': properttype_form
+        }
+        return render(request, 'property/add_property.html', context)
     
 
 class CompareProperty(TemplateView):

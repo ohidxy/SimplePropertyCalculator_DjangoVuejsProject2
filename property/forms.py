@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Property
+from .models import Property, PropertyType
 from django import forms
 
 class AddProperty(ModelForm):
@@ -10,4 +10,10 @@ class AddProperty(ModelForm):
     )
     class Meta:
         model = Property
-        exclude=['price_per_ft2',]
+        exclude = ['price_per_ft2',]
+
+
+class AddPropertyType(ModelForm):
+    class Meta:
+        model = PropertyType
+        exclude = ['',]
