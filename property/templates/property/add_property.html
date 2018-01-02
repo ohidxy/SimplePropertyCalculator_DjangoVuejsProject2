@@ -1,9 +1,20 @@
 {% extends 'property/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} Add Property | Property Calculator {% endblock title %}
 
 { {% block content %}
 <div class="container">
-    <h1>Add property</h1>
+  <div class="row" style="margin: 2rem 0 0 0;">
+    <div class="col-md-6">
+      <form action="" method="post" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
+        {{ form|crispy }}
+        <div class="form-group text-right">
+          <button class="btn btn-success">Save</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-3"></div>
   </div>
+  
+</div>
 {% endblock content %}
