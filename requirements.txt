@@ -1,3 +1,3 @@
-# python
-# django
-# django-crispy form
+django-crispy-forms
+djangorestframework
+djangorestframework-bulk

@@ -17,9 +17,9 @@ class Property(models.Model):
     date = models.DateField()
     built_up_area = models.FloatField()
 
-    def save(self):
+    def save(self, *args, **kwargs):
       self.price_per_ft2 = self.transaction_price / self.land_area
-      return super(Property, self).save() 
+      return super(Property, self).save(*args, **kwargs) 
 
     def __str__(self):
       return self.property_name
