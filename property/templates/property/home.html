@@ -5,8 +5,8 @@
 {% block content %}
 <div id="home" class="container">
   <div class="row" style="margin: 2rem 0 0 0;">
-    <div v-for="p in message" class="col-md-4">
-        <form action="/" v-on:submit.prevent method="delete" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
+    <div v-for="p in property_data" class="col-md-4">
+        <form action="/" method="post" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
           <div class="form-group">
             <label for="property_name">Property Name</label>
             <input id="property_name" class="form-control" type="text" v-model="p.property_name">
@@ -39,10 +39,9 @@
             <label for="purchased_date">Purchased Date</label>
             <input id="purchased_date" class="form-control" type="text" v-model="p.date" disabled>
           </div>
-          {% csrf_token %}
           <div class="form-group text-right">
-            <button class="btn btn-success" :name="p.id"> Save </button>
-            <button class="btn btn-danger" v-on:click="delete(p.id)"> Delete </button>
+            <!-- <button class="btn btn-success" :name="p.id"> Save </button> -->
+            <button type="submit" class="btn btn-danger" @click="deleteProperty(p.id)"> Delete </button>
           </div>
         </form>
     </div> <!-- End of for loop -->
@@ -50,32 +49,34 @@
 </div>
 
 <script>
+  axios.defaults.xsrfCookieName = 'csrftoken'
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
   var app = new Vue({
     delimiters: ['{', '}'],
     el: '#home',
     data: {
-      message: 'Hello Vue!',
-      clickedId: null,
+      property_data: null,
     },
     methods: {
       get_all_properties() {
         axios.get('/rest-api/')
         .then( res => {
           console.log(res.data)
-          this.message = res.data;
+          this.property_data = res.data;
         })
         .catch( err => {
           console.log(err.data)
         });
       },
-      delete(id){
+      deleteProperty(id){
         console.log("Delete button is clicked!")
-        axios.delete('/rest-api/', id)
+        axios.delete('/rest-api/delete/'+id)
         .then(res=> {
           console.log("Delete Success!")
         })
         .catch(err=>{
-          console.log("Delete Failed!")
+          console.log(err.response)
         });
       }
     },
