@@ -3,52 +3,85 @@
 {% block title %} All Properties | Property Calculator {% endblock title %}
 
 {% block content %}
-<div class="container">
+<div id="home" class="container">
   <div class="row" style="margin: 2rem 0 0 0;">
-    {% for p in property %}
-    <div class="col-md-6">
-        <form action="/" method="post" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
+    <div v-for="p in message" class="col-md-4">
+        <form action="/" v-on:submit.prevent method="delete" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
           <div class="form-group">
             <label for="property_name">Property Name</label>
-            <input id="property_name" class="form-control" type="text" value="{{ p.property_name }}">
+            <input id="property_name" class="form-control" type="text" v-model="p.property_name">
           </div>
           <div class="form-group">
             <label for="property_type">Property Type</label>
-            <input id="property_type" class="form-control" type="text" value="{{ p.property_type }}">
+            <input id="property_type" class="form-control" type="text" v-model="p.property_type">
           </div>
           <div class="form-group">
             <label for="property_address">Property Address</label>
-            <input id="property_address" class="form-control" type="text" value="{{ p.property_address }}">
+            <input id="property_address" class="form-control" type="text" v-model="p.property_address">
           </div>
           <div class="form-group">
             <label for="land_area">Land Area (ft²)</label>
-            <input id="land_area" class="form-control" type="text" value="{{ p.land_area }}">
+            <input id="land_area" class="form-control" type="text" v-model="p.land_area">
           </div>
           <div class="form-group">
             <label for="built_up_area">Built Up Area (ft²)</label>
-            <input id="built_up_area" class="form-control" type="text" value="{{ p.built_up_area }}">
+            <input id="built_up_area" class="form-control" type="text" v-model="p.built_up_area">
           </div>
           <div class="form-group">
             <label for="transaction_price">Transactional Price (MYR)</label>
-            <input id="transaction_price" class="form-control" type="text" value="{{ p.transaction_price }}">
+            <input id="transaction_price" class="form-control" type="text" v-model="p.transaction_price">
           </div>
           <div class="form-group">
             <label for="price_per_ft2">Transactional Price in MYR (/ft²)</label>
-            <input id="price_per_ft2" class="form-control" type="text" value="{{ p.price_per_ft2 }}" disabled>
+            <input id="price_per_ft2" class="form-control" type="text" v-model="p.price_per_ft2" disabled>
           </div>
           <div class="form-group">
             <label for="purchased_date">Purchased Date</label>
-            <input id="purchased_date" class="form-control" type="text" value="{{ p.date }}" disabled>
+            <input id="purchased_date" class="form-control" type="text" v-model="p.date" disabled>
           </div>
           {% csrf_token %}
           <div class="form-group text-right">
-            <button class="btn btn-success" name="{{ p.id }}"> Save </button>
-            <button class="btn btn-danger" name="{{ p.id }}"> Delete </button>
+            <button class="btn btn-success" :name="p.id"> Save </button>
+            <button class="btn btn-danger" v-on:click="delete(p.id)"> Delete </button>
           </div>
         </form>
-    </div>
-    {% endfor %}
+    </div> <!-- End of for loop -->
   </div>
-  
 </div>
+
+<script>
+  var app = new Vue({
+    delimiters: ['{', '}'],
+    el: '#home',
+    data: {
+      message: 'Hello Vue!',
+      clickedId: null,
+    },
+    methods: {
+      get_all_properties() {
+        axios.get('/rest-api/')
+        .then( res => {
+          console.log(res.data)
+          this.message = res.data;
+        })
+        .catch( err => {
+          console.log(err.data)
+        });
+      },
+      delete(id){
+        console.log("Delete button is clicked!")
+        axios.delete('/rest-api/', id)
+        .then(res=> {
+          console.log("Delete Success!")
+        })
+        .catch(err=>{
+          console.log("Delete Failed!")
+        });
+      }
+    },
+    created() {
+      this.get_all_properties()
+    },
+  })
+</script>
 {% endblock content %}
