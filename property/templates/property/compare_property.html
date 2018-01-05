@@ -4,8 +4,77 @@
 
 {% block content %}
 <div id="compare_property" class="container" style="margin-top: 1rem;">
-  <div id="property" class="row">
-    
+  
+  Property to compare:
+  <select v-model="compareProp">
+    <option value="">0</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <br>
+  CompareProp: { compareProp }
+  <div class="row">
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th >#</th>
+              <th v-for="(x,k) in property_data">Property { k+1 }</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Property Type</th>
+              <td v-for="th in type">{ th }</td>
+            </tr>
+            <tr>
+              <th>Land Area (ft²)</th>
+              <td v-for="la in land_area">{ la }</td>
+            </tr>
+            <tr>
+              <th>Transaction Price (MYR)</th>
+              <td v-for="tp in transaction_price">{ tp }</td>
+            </tr>
+            <tr>
+              <th>Transaction Price (/ft²)</th>
+              <td v-for="ppf in price_per_ft2">{ ppf }</td>
+            </tr>
+            <tr>
+              <th>Date</th>
+              <td v-for="dt in date">{ dt }</td>
+            </tr>
+            <tr>
+              <th>Est. Built Up Area (ft²)</th>
+              <td v-for="bua in built_up_area">{ bua }</td>
+            </tr>
+          </tbody>
+        </table> 
+
+      <!-- <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Property 1</th>
+              <th scope="col">Property 2</th>
+              <th scope="col">Property 3</th>
+              <th scope="col">Property 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(p, k) in property_data">
+              <td v-for="a in p">
+                { a }
+              </td>
+            </tr>
+            <tr v-for="th in tabel_header">
+              <th>{ th }</th>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+              <td>x</td>
+            </tr>
+          </tbody>
+        </table> -->
   </div>
   <br><br>
 </div>
@@ -15,15 +84,64 @@
 
   var app = new Vue({
     delimiters: ['{', '}'],
-    el: '#add_property',
+    el: '#compare_property',
     data: {
+      compareProp: null,
       property_data: null,
+      tabel_header: ["Type","Land Area","Transaction Price","Date","Est. Built Up Area"],
+      type: [],
+      land_area: [],
+      transaction_price: [],
+      date: [],
+      built_up_area: [],
+      price_per_ft2: [],
+    },
+    created(){
+      this.get_properties()
     },
     methods: {
-      add_property(){
-
+      get_properties(){
+        axios.get('/rest-api/')
+        .then( res => {
+          this.property_data = res.data;
+          var prop = this.property_data
+          for(var i=0; i<prop.length; i++){
+            // console.log(prop[i])
+            for (x in prop[i]){
+              if(x == "property_type"){
+                this.type.push(prop[i][x])
+              }
+              if(x == "land_area"){
+                this.land_area.push(prop[i][x])
+              }
+              if(x == "date"){
+                this.date.push(prop[i][x])
+              }
+              if(x == "built_up_area"){
+                this.built_up_area.push(prop[i][x])
+              }
+              if(x == "transaction_price"){
+                this.transaction_price.push(prop[i][x])
+              }
+              if(x == "price_per_ft2"){
+                this.price_per_ft2.push(prop[i][x])
+              }
+            } 
+          }
+          // console.log(this.type)
+          // console.log(this.land_area)
+          // console.log(this.date)
+          // console.log(this.built_up_area)
+          // console.log(this.price_per_ft2)
+        })
+        .catch( err => {
+          console.log(err.data)
+        });
+      },
+      save_property(){
+        axios.post().then().catch();
       }
-    },
+    }
   })
 </script>
 {% endblock content %}
