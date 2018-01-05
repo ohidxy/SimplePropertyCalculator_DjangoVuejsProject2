@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Property, PropertyType
+from .models import Property
 from django import forms
 
 class AddProperty(ModelForm):
