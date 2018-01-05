@@ -5,23 +5,15 @@
 { {% block content %}
 <div class="container">
   <div class="row" style="margin: 2rem 0 0 0;">
-    <div class="col-md-6">
+    <div class="col-md-8">
       <form action="" method="post" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
         {{ property_form|crispy }}
-        <div class="form-group text-right">
-          <button class="btn btn-success">Save</button>
-        </div>
-      </form>
-    </div>
-    <div class="col-md-6">
-      <form action="" method="post" style="padding: 1rem; border: solid 1px rgb(201, 201, 201); border-radius: 0.2rem;">
-        {{ properttype_form|crispy }}
+        {% csrf_token %}
         <div class="form-group text-right">
           <button class="btn btn-success">Save</button>
         </div>
       </form>
     </div>
   </div>
-  
 </div>
 {% endblock content %}

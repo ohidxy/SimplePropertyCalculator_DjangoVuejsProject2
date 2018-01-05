@@ -1,16 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Property
 from .serializers import PropertySerializer
 from rest_framework_bulk import ListBulkCreateUpdateDestroyAPIView
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-def all_property(request):
-    return render(request, 'property/home.html')
+from .forms import AddProperty
 
 def add_property(request):
-    return render(request, 'property/add_property.html')
+    if request.method == "POST":
+        form = AddProperty(request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('/')
+    else:
+        form = AddProperty()
+        return render(request, 'property/add_property.html', {'property_form': form})
 
 def compare_property(request):
     return render(request, 'property/compare_property.html')

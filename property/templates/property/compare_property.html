@@ -3,19 +3,27 @@
 {% block title %} Compare Properties | Property Calculator {% endblock title %}
 
 {% block content %}
-<div class="container" style="margin-top: 1rem;">
+<div id="compare_property" class="container" style="margin-top: 1rem;">
   <div id="property" class="row">
-    <div class="col-md-4">
-      <select id="">
-        
-      </select>
-    </div>
+    
   </div>
   <br><br>
 </div>
 <script>
-  $(function() {
-    
-  });
+  axios.defaults.xsrfCookieName = 'csrftoken'
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
+  var app = new Vue({
+    delimiters: ['{', '}'],
+    el: '#add_property',
+    data: {
+      property_data: null,
+    },
+    methods: {
+      add_property(){
+
+      }
+    },
+  })
 </script>
 {% endblock content %}

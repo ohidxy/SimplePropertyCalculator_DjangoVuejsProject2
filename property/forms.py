@@ -11,9 +11,3 @@ class AddProperty(ModelForm):
     class Meta:
         model = Property
         exclude = ['price_per_ft2',]
-
-
-class AddPropertyType(ModelForm):
-    class Meta:
-        model = PropertyType
-        exclude = ['',]
