@@ -3,10 +3,10 @@ from django.db import models
 
 class Property(models.Model):
     choices = (
-      ('Terrace House', "Terrace"),
-      ('Bunglow House', "Bunglow"),
+      ('Terrace House', "Terrace House"),
+      ('Bunglow House', "Bunglow House"),
       ('Apartment', "Apartment"),
-      ('Duplex House', "Duplex"),
+      ('DuplexHouse', "Duplex"),
     )
     property_type = models.CharField(max_length=255, choices=choices)
     # property_type = models.ForeignKey(PropertyType, on_delete=models.CASCADE)
