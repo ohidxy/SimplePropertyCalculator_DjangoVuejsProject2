@@ -8,7 +8,14 @@ class PropertyType(models.Model):
 
 
 class Property(models.Model):
-    property_type = models.ForeignKey(PropertyType, on_delete=models.CASCADE)
+    choices = (
+      ('Terrace House', "Terrace"),
+      ('Bunglow House', "Bunglow"),
+      ('Apartment', "Apartment"),
+      ('Duplex House', "Duplex"),
+    )
+    property_type = models.CharField(max_length=255, choices=choices)
+    # property_type = models.ForeignKey(PropertyType, on_delete=models.CASCADE)
     property_name = models.CharField(max_length=255)
     property_address = models.CharField(max_length=255)
     land_area = models.FloatField()
