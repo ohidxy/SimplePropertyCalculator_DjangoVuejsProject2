@@ -70,8 +70,11 @@
         </tbody>
       </table>
   </div>
+  <div class="alert alert-success text-center" v-if="save_success">
+    You have updated the data successfully!
+  </div>
   <div class="text-right">
-    <button class="btn btn-success btn-lg"> Save </button>
+    <button @click="save_property" class="btn btn-success btn-lg"> Save </button>
   </div>
 
   
@@ -101,6 +104,8 @@
       date: [],
       built_up_area: [],
       price_per_ft2: [],
+
+      save_success: false,
     },
     created(){
       this.get_properties()
@@ -155,9 +160,44 @@
         });
       },
       save_property(){
-        axios.post().then().catch();
+        // console.log('Save button clicked!')
+        this.save_success = false 
+        let data = []
+        for(var i=0; i<this.property_data.length; i++){
+          let id = this.property_data[i].id
+          let transaction_price = this.adjusted_value(i)
+          let price_per_ft2 = this.adjusted_rate(i)
+          
+          data.push({
+            id,
+            transaction_price,
+            price_per_ft2,
+          })
+        }
+        axios.patch('/rest-api/', data)
+        .then(res=>{
+          console.log(res.data)
+          this.save_success = true
+        }).catch(err=>{
+          console.log(err.data)
+        });
       }
     }
   })
+
+  /*
+            [{
+                "id": 1,
+                "property_address": "OH, US",
+                "land_area": 2300.0,
+                "transaction_price": 567018.0
+            },
+            {
+                "id": 2,
+                "property_address": "SV, US",
+                "land_area": 9000.0,
+                "transaction_price": 500018.0
+            }]
+  */
 </script>
 {% endblock content %}
