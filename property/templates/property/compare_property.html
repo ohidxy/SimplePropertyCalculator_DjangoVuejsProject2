@@ -64,7 +64,7 @@
           <tr>
             <th>Adjusted Rate (/ft²)</th>
             <td v-for="(x,k) in property_data">
-              { (((total_adjustment(k)+100)/100 * transaction_price[k])/land_area[k]).toFixed(2) }
+              { adjusted_rate(k) }
             </td>
           </tr>
         </tbody>
@@ -110,7 +110,7 @@
         return ((this.total_adjustment(k)+100)/100 * this.transaction_price[k]).toFixed(2)
       },
       adjusted_rate(k){
-        return (adjusted_value(k)/this.land_area[k]).toFixed(2)
+        return (this.adjusted_value(k)/this.land_area[k]).toFixed(2)
       },
       total_adjustment(i){
         let total_adj = 0
