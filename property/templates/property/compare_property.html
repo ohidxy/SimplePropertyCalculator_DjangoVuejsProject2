@@ -51,19 +51,20 @@
           <tr>
             <th>Total Adjustment</th>
             <td v-for="(x, k) in property_data">
-              { total_adjustment(k) }
+              { total_adjustment(k) } %
             </td>
           </tr>
           <tr>
             <th>Adjusted Value</th>
             <td v-for="(x,k) in property_data">
-              XXX
+              <!-- { ((total_adjustment(k)+100)/100 * transaction_price[k]).toFixed(2) } -->
+              { adjusted_value(k) }
             </td>
           </tr>
           <tr>
             <th>Adjusted Rate (/ft²)</th>
             <td v-for="(x,k) in property_data">
-              XXX
+              { (((total_adjustment(k)+100)/100 * transaction_price[k])/land_area[k]).toFixed(2) }
             </td>
           </tr>
         </tbody>
@@ -101,27 +102,16 @@
       built_up_area: [],
       price_per_ft2: [],
     },
-    computed: {
-      total_adjustment: {
-        get(){
-          let total_adj = 0
-          for(x=0; x<12; x++){
-            if(this.aj_var[x+" "+0]==null){
-              continue
-            }
-            total_adj += Number(this.aj_var[x+" "+0])
-          }
-          return Number(total_adj)
-        },
-        set(){
-          
-        }
-      }
-    },
     created(){
       this.get_properties()
     },
     methods: {
+      adjusted_value(k){
+        return ((this.total_adjustment(k)+100)/100 * this.transaction_price[k]).toFixed(2)
+      },
+      adjusted_rate(k){
+        return (adjusted_value(k)/this.land_area[k]).toFixed(2)
+      },
       total_adjustment(i){
         let total_adj = 0
           for(x=0; x<12; x++){
@@ -138,7 +128,6 @@
           this.property_data = res.data;
           var prop = this.property_data
           for(var i=0; i<prop.length; i++){
-            // console.log(prop[i])
             for (x in prop[i]){
               if(x == "property_type"){
                 this.type.push(prop[i][x])
